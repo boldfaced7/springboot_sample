@@ -1,4 +1,4 @@
-package com.example.springboot_sample;
+package com.example.springboot_sample.util;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.example.springboot_sample.controller;
 
-import com.example.springboot_sample.MyProperties;
+import com.example.springboot_sample.util.MyProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
