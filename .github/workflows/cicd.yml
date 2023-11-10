@@ -35,9 +35,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
-      - name: Set artifact
-        run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
-
       - name: Build with Docker
         run: |
           docker build -t ${{ env.IMAGE_NAME }} .
