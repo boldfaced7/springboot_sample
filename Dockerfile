@@ -1,9 +1,9 @@
-# ⭐ 'ARG' 예약어를 통해 인자로 전달 받아야 한다.
-ARG TEST_1
-ARG TEST_2
-
 # (1) base-image
 FROM openjdk:11
+
+# ⭐ 'ARG' 예약어를 통해 인자로 전달 받아야 한다.
+ARG TEST_1=Hello
+ARG TEST_2=Kang
 
 # ⭐ 'ENV' 예약어를 통해 전달받은 값을 실제 값과 매칭시켜야 한다.
 ENV TEST_1=${TEST_1} \
