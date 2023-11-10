@@ -1,0 +1,69 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  S3_BUCKET_NAME: github-action-boldfaced
+  AWS_REGION: ap-northeast-2
+  CODE_DEPLOY_APPLICATION_NAME: github-action
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: github-action-deployment-group
+  IMAGE_NAME: one-day-a-pill-BE
+  FILE_NAME: one-day-a-pill-BE.tar
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # (1) 기본 체크아웃
+      - uses: actions/checkout@v3
+
+      # (2) JDK 11 세팅
+      - uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # () Gradle build
+      - name: Build with Gradle
+        run: ./gradlew clean build
+
+      - name: Set artifact
+        run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
+
+      - name: Build with Docker
+        run: docker build -t ${{ env.IMAGE_NAME }} .
+
+      - name: Save Docker image
+        run: docker save ${{ env.IMAGE_NAME }} > ${{ env.FILE_NAME }}
+
+      # AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # 빌드 결과물을 S3 버킷에 업로드
+      - name: Upload to AWS S3
+        run: |
+          aws deploy push \
+            --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+            --ignore-hidden-files \
+            --s3-location s3://$S3_BUCKET_NAME/${{ env.FILE_NAME }} \
+            --source .
+
+      # S3 버킷에 있는 파일을 대상으로 CodeDeploy 실행
+      - name: Deploy to AWS EC2 from S3
+        run: |
+          aws deploy create-deployment \
+            --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+            --s3-location bucket=$S3_BUCKET_NAME,key=${{ env.FILE_NAME }},bundleType=tar
