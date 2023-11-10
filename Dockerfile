@@ -7,7 +7,7 @@ ARG test_2
 
 # ⭐ 'ENV' 예약어를 통해 전달받은 값을 실제 값과 매칭시켜야 한다.
 ENV TEST_1=${test_1} \
-    TEST_2=${test_2} \
+    TEST_2=${test_2}
 
 # (2) COPY에서 사용될 경로 변수
 ARG JAR_FILE=build/libs/*.jar
