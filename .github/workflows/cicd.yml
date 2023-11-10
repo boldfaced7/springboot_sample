@@ -36,10 +36,7 @@ jobs:
         run: ./gradlew clean build
 
       - name: Build with Docker
-        run: |
-          docker build -t ${{ env.IMAGE_NAME }} \
-          --build-arg TEST_1=${{ env.TEST_1 }} \
-          --build-arg TEST_2=${{ env.TEST_2 }} .
+        run: docker build -t ${{ env.IMAGE_NAME }} --build-arg TEST_1=${{ env.TEST_1 }} --build-arg TEST_2=${{ env.TEST_2 }} .
 
       - name: Save Docker image
         run: docker save ${{ env.IMAGE_NAME }} > ${{ env.FILE_NAME }}
