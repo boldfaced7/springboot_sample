@@ -9,8 +9,8 @@ env:
   AWS_REGION: ap-northeast-2
   CODE_DEPLOY_APPLICATION_NAME: github-action
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: github-action-deployment-group
-  IMAGE_NAME: one-day-a-pill-BE
-  FILE_NAME: one-day-a-pill-BE.tar
+  IMAGE_NAME: one-day-a-pill-be
+  FILE_NAME: one-day-a-pill-be.tar
   TEST_1: Hello
   TEST_2: Kang
 
