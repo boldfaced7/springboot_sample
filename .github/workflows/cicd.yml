@@ -11,8 +11,8 @@ env:
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: github-action-deployment-group
   IMAGE_NAME: one-day-a-pill-BE
   FILE_NAME: one-day-a-pill-BE.tar
-  ENV_VAR1: Hello
-  ENV_VAR2: Kang
+  TEST_1: Hello
+  TEST_2: Kang
 
 jobs:
   build:
@@ -39,10 +39,10 @@ jobs:
         run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
 
       - name: Build with Docker
-        run: docker build -t ${{ env.IMAGE_NAME }} .
-        build-args: |
-          TEST_1=${{ env.ENV_VAR1 }}
-          TEST_2=${{ env.ENV_VAR2 }}
+        run: |
+          docker build -t ${{ env.IMAGE_NAME }} .
+          --build-arg TEST_1=${{ env.TEST_1 }} \
+          --build-arg TEST_2=${{ env.TEST_2 }}
 
       - name: Save Docker image
         run: docker save ${{ env.IMAGE_NAME }} > ${{ env.FILE_NAME }}
