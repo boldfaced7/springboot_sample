@@ -32,7 +32,6 @@ jobs:
           echo "TEST_1=${{ env.TEST_1 }}" > .env
           echo "TEST_2=${{ env.TEST_2 }}" >> .env
 
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 

@@ -1,3 +1,2 @@
 #!/bin/bash
-cd ..
-sudo docker-compose -p one-day-a-pill up
+sudo docker-compose -p one-day-a-pill -f ./..docker-compose.yaml up
