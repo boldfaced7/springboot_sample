@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     private final MyProperties myProperties;
 
+
     @GetMapping
     public ResponseEntity<MyProperties> hello() {
         return ResponseEntity.ok(myProperties);
