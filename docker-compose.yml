@@ -1,0 +1,22 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    networks:
+      - mynetwork
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+  redis:
+    image: redis:latest
+    networks:
+      - mynetwork
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - mynetwork
+    depends_on:
+      - redis
+networks:
+  mynetwork:
